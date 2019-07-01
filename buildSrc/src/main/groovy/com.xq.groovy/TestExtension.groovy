@@ -1,0 +1,3 @@
+class TestExtension {
+    String message
+}

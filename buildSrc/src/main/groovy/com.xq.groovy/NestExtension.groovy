@@ -1,0 +1,3 @@
+class NestExtension {
+    String msg
+}

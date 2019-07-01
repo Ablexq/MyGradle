@@ -43,3 +43,17 @@ buildscript {
 //自定义gradle plugin的properties文件名
 apply plugin: 'com.xq.groovy'
 //################################################################
+//赋值方式一：
+testExt1 {
+    //给插件扩展的属性赋值
+    message "hello world 1111111111111111"
+
+    nestArgs {
+        msg "hello world nest--------------"
+    }
+}
+
+//赋值方式二：
+testExt2.message = "hello world 22222222222222"
+
+//################################################################

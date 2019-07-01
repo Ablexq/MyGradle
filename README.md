@@ -112,8 +112,55 @@ uploadArchives {
 app -> other -> myTask(自定义的task)，点击执行，可看到日志。
 
 ```  
-
+gradle :app:myTask
 ```
+
+# 扩展插件 Extension
+  
+扩展插件 Extension 就是用于 Plugin 与 Project 通讯用的。
+
+定义Extension
+``` 
+class TestExtension {
+    String message
+}
+```
+引用
+``` 
+class MyCustomPlugin implements Plugin<Project> {
+    void apply(Project project) {
+        //TestExtension extension = project.getExtensions().create("testExt", TestExtension)
+        //1.添加插件扩展到project.extensions集合中
+        project.extensions.add("testExt", TestExtension)
+
+        project.task('myTask') << {
+            //2.获取外界配置的 TestExtension
+            TestExtension extension = project.testExt
+            //3.输出插件扩展属性
+            println "========================"
+            println extension.message
+            println "========================"
+        }
+    }
+}
+```
+赋值 ：
+
+app的build.gradle:
+``` 
+testExt {
+    //给插件扩展的属性赋值
+    message  "helloworld"
+}
+```
+验证：
+
+``` 
+gradle :app:myTask
+```
+
+参考：https://www.jianshu.com/p/ffd6153ace1d
+
 
 # gradle 常见命令：
 
