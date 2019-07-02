@@ -1,4 +1,80 @@
 
+
+
+
+# Gradle生命周期
+
+在一个Android工程中可能有很多个Module,那么每一个Module都会对应着一个Project对象
+
+在gradle中，project就好像是android中的activity一样，经常使用，所以project概述是一个很重要的概念
+
+在android工程中，所有的lib,module都是一个project
+
+
+Gradle生命周期分为三个部分，如下：
+
+1 初始化阶段: 解析整个工程中所有Project,构建所有的Project对应的project对象，这个阶段主要就是解析setting.gradle文件
+
+2 配置阶段：解析所有的projects对象中的task，构建好所有的task拓扑图，主要解析各个project下的build.gradle文件
+
+3 执行阶段：执行具体的的task及其依赖task
+
+# Gradle的生命周期的监听
+
+在root build.gradle中，添加如下代码：
+``` 
+/**
+ * 配置阶段开始前回调监听
+ */
+this.beforeEvaluate {
+}
+ 
+/**
+ * 配置阶段完成后回调监听
+ */
+this.afterEvaluate {
+    println '配置阶段完成...'
+}
+ 
+/**
+ * gradle执行完毕的回调监听
+ */
+this.gradle.buildFinished {
+    println 'gradle执行完毕...'
+}
+
+this.gradle.addBuildListener(new BuildListener() {
+    @Override
+    void buildStarted(Gradle gradle) {
+ 
+    }
+ 
+    @Override
+    void settingsEvaluated(Settings settings) {
+ 
+    }
+ 
+    @Override
+    void projectsLoaded(Gradle gradle) {
+ 
+    }
+ 
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+ 
+    }
+ 
+    @Override
+    void buildFinished(BuildResult result) {
+ 
+    }
+})
+```
+
+
+
+
+
 # Gradle 的插件可以有三种形式来提供：
 
 > Build script（.gradle中定义）
@@ -84,7 +160,7 @@ uploadArchives {
 ```
 然后执行打包命令：
 
-双击或者 gradle uploadArchives
+双击或者 gradlew uploadArchives
 
 ![](imgs/打包.png)
 
@@ -112,12 +188,14 @@ uploadArchives {
 app -> other -> myTask(自定义的task)，点击执行，可看到日志。
 
 ```  
-gradle :app:myTask
+gradlew :app:myTask
 ```
 
 # 扩展插件 Extension
   
 扩展插件 Extension 就是用于 Plugin 与 Project 通讯用的。
+
+Extension其实可以理解成Java中的Java bean，它的作用也是类似的，即获取输入数据，然后在插件中使用。
 
 定义Extension
 ``` 
@@ -162,103 +240,112 @@ gradle :app:myTask
 参考：https://www.jianshu.com/p/ffd6153ace1d
 
 
-# gradle 常见命令：
+#  gradle 命令
+
+![](imgs/命令.png)
+
+``` 
+gradlew：Linux下可执行脚本
+gradlew.bat：Windows下可执行脚本
+```
+ 
 
 参考： https://www.jianshu.com/p/a03f4f6ae31d
 
 gradle 任务查询命令
 
+
 ``` 
 # 查看任务
-gradle tasks
+gradlew tasks
 # 查看所有任务 包括缓存任务等
-gradle tasks --all
+gradlew tasks --all
 # 对某个module [moduleName] 的某个任务[TaskName] 运行
-gradle :moduleName:taskName
+gradlew :moduleName:taskName
 ```
 
 快速构建命令
 
 ```
 # 查看构建版本
-gradle -v
+gradlew -v
 # 清除build文件夹
-gradle clean
+gradlew clean
 # 检查依赖并编译打包
-gradle build
+gradlew build
 # 编译并安装debug包
-gradle installDebug
+gradlew installDebug
 # 编译并打印日志
-gradle build --info
+gradlew build --info
 # 译并输出性能报告，性能报告一般在 
 # 构建工程根目录 build/reports/profile
-gradle build --profile
+gradlew build --profile
 # 调试模式构建并打印堆栈日志
-gradle build --info --debug --stacktrace
+gradlew build --info --debug --stacktrace
 # 强制更新最新依赖，清除构建并构建
-gradle clean build --refresh-dependencies
+gradlew clean build --refresh-dependencies
 ```
 
 gradle 指定构建目标命令
 
 ``` 
 # 编译并打Debug包
-gradle assembleDebug
+gradlew assembleDebug
 # 这个是简写 assembleDebug
-gradle aD
+gradlew aD
 # 编译并打Release的包
-gradle assembleRelease
+gradlew assembleRelease
 # 这个是简写 assembleRelease
-gradle aR
+gradlew aR
 ```
 
 gradle 构建并安装调试命令
 
 ``` 
 # 编译并打Debug包
-gradle assembleDebug
+gradlew assembleDebug
 # 编译app module 并打Debug包
-gradle install app:assembleDebug
+gradlew install app:assembleDebug
 # 编译并打Release的包
-gradle assembleRelease
+gradlew assembleRelease
 #  Release模式打包并安装
-gradle installRelease
+gradlew installRelease
 # 卸载Release模式包
-gradle uninstallRelease
+gradlew uninstallRelease
 ```
 gradle 多渠道打包
 ```  
 # Release模式打包并安装
-gradle installRelease
+gradlew installRelease
 # 卸载Release模式包
-gradle uninstallRelease
+gradlew uninstallRelease
 
 # Release模式全部渠道打包
-gradle assembleRelease
+gradlew assembleRelease
 # Release模式 test 渠道打包
-gradle assembleTestRelease
+gradlew assembleTestRelease
 # debug release模式全部渠道打包
-gradle assemble
+gradlew assemble
 ```
 
 gradle 查看包依赖
 
 ```  
-gradle 查看包依赖
-gradle dependencies
+gradlew 查看包依赖
+gradlew dependencies
 # 或者模组的 依赖
-gradle app:dependencies
+gradlew app:dependencies
 # 检索依赖库
-gradle app:dependencies | grep CompileClasspath
+gradlew app:dependencies | grep CompileClasspath
 # windows 没有 grep 命令
-gradle app:dependencies | findstr "CompileClasspath"
+gradlew app:dependencies | findstr "CompileClasspath"
 
 # 将检索到的依赖分组找到 比如 multiDebugCompileClasspath 就是 multi 渠道分发的开发编译依赖
-gradle app:dependencies --configuration multiDebugCompileClasspath
+gradlew app:dependencies --configuration multiDebugCompileClasspath
 # 一般编译时的依赖库，不是固定配置方式，建议检索后尝试
-gradle app:dependencies --configuration compile
+gradlew app:dependencies --configuration compile
 # 一般运行时的依赖库，不是固定配置方式，建议检索后尝试
-gradle app:dependencies --configuration runtime
+gradlew app:dependencies --configuration runtime
 ```
 
 

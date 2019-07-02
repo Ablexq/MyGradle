@@ -27,6 +27,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
+println "============================================"
+println "Configuration配置阶段"
+println "解析所有projects对象中的task,构建好所有task的拓扑图（有向无环图）"
+println "============================================"
+
 //################## 引用自定义的gradle plugin ##########
 buildscript {
     repositories {

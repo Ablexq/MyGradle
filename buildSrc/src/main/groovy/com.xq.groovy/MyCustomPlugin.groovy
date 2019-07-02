@@ -16,6 +16,10 @@ class MyCustomPlugin implements Plugin<Project> {
             println "========================"
             println "hello task of gradle plugin!"
             println "========================"
+            println "============================================"
+            println "Execution执行阶段"
+            println "执行具体的task及其依赖的task"
+            println "============================================"
 
             //2.获取外界配置的 TestExtension
             TestExtension extension1 = project.testExt1

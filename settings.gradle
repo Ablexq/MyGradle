@@ -1,1 +1,6 @@
 include ':app', ':buildSrc'
+
+println "============================================"
+println "Initialization初始化阶段"
+println "解析整个工程中的所有Project,构建所有的Project对应的project对象"
+println "============================================"
