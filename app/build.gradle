@@ -38,16 +38,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //修改
             signingConfig signingConfigs.release
-            resValue "string", "app_name", "@string/app_name_release"
+            //不同app名称
+//            resValue "string", "app_name", "@string/app_name_release"
+            //不同app图标
+            manifestPlaceholders = [app_icon: "@drawable/logo_release",
+                                    app_name:"@string/app_name_release"]
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //修改
             signingConfig signingConfigs.debug
+            //不同app名称
             //type ，name， value
-            resValue "string", "app_name", "@string/app_name_debug"
+//            resValue "string", "app_name", "@string/app_name_debug"
             applicationIdSuffix '.debug' //增加包名后缀,可同时安装release和debug
+            //不同app图标
+            manifestPlaceholders = [app_icon: "@mipmap/ic_launcher",
+                                    app_name: "@string/app_name_debug"]
         }
     }
 }

@@ -1,29 +1,24 @@
 task pgyer(type: Exec) {
 
-    dependsOn("assembleRelease")
+    // todo 这里替换为自己的蒲公英的apiKey
+    String apiKey = "89d9dc80bb48639514dfd9480f5a592d"
+    // todo 这里替换为自己的蒲公英的userKey
+    String userKey = "9bdce1d8eb394872f59d1ae37af09348"
+    String desc = getGitLog()
 
-    doLast {
-
-        // todo 这里替换为自己的蒲公英的apiKey
-        String apiKey = "89d9dc80bb48639514dfd9480f5a592d"
-        // todo 这里替换为自己的蒲公英的userKey
-        String userKey = "9bdce1d8eb394872f59d1ae37af09348"
-        String desc = getGitLog()
-
-        if (project.hasProperty("pgyerDesc")) {
-            desc = pgyerDesc + "\n" + desc
-        }
-        if (desc == null || desc.isEmpty()) {
-            desc = "保持沉默"
-        }
-
-        commandLine 'curl'
-        args '-k', 'http://www.pgyer.com/apiv1/app/upload',
-                '-F', "uKey=${userKey}",
-                '-F', "_api_key=${apiKey}",
-                '-F', "file=@${getApkPath()}",
-                '-F', "updateDescription=${desc}"
+    if (project.hasProperty("pgyerDesc")) {
+        desc = pgyerDesc + "\n" + desc
     }
+    if (desc == null || desc.isEmpty()) {
+        desc = "保持沉默"
+    }
+
+    commandLine 'curl'
+    args '-k', 'http://www.pgyer.com/apiv1/app/upload',
+            '-F', "uKey=${userKey}",
+            '-F', "_api_key=${apiKey}",
+            '-F', "file=@${getApkPath()}",
+            '-F', "updateDescription=${desc}"
 }
 
 def getGitLog() {
