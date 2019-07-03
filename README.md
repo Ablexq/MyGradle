@@ -348,6 +348,21 @@ gradlew app:dependencies --configuration compile
 gradlew app:dependencies --configuration runtime
 ```
 
+# 打包上传到蒲公英
+
+Windows需要下载curl并配置环境变量
+
+下载地址为：
+https://curl.haxx.se/windows/
+
+
+查看API Key和User Key ： 
+https://www.pgyer.com/account/api
+
+
+蒲公英使用一条命令快速上传应用：
+http://www.pgyer.com/doc/view/upload_one_command
+
 
 
 

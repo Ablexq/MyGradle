@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+apply from: "../pgyer.gradle"
+
 //获取properties
 def keystorePropertiesFile = rootProject.file("sign.properties")
 def keystoreProperties = new Properties()
@@ -36,12 +38,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //修改
             signingConfig signingConfigs.release
+            resValue "string", "app_name", "@string/app_name_release"
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //修改
             signingConfig signingConfigs.debug
+            //type ，name， value
+            resValue "string", "app_name", "@string/app_name_debug"
+            applicationIdSuffix '.debug' //增加包名后缀,可同时安装release和debug
         }
     }
 }
