@@ -42,7 +42,7 @@ android {
 //            resValue "string", "app_name", "@string/app_name_release"
             //不同app图标
             manifestPlaceholders = [app_icon: "@drawable/logo_release",
-                                    app_name:"@string/app_name_release"]
+                                    app_name: "@string/app_name_release"]
         }
         debug {
             minifyEnabled false
@@ -74,33 +74,4 @@ println "Configuration配置阶段"
 println "解析所有projects对象中的task,构建好所有task的拓扑图（有向无环图）"
 println "============================================"
 
-//################## 引用自定义的gradle plugin ##########
-buildscript {
-    repositories {
-        maven {//本地Maven仓库地址
-            url uri('../repo')
-        }
-    }
-    dependencies {
-        //maven本地打包定义的gmv,引用格式为-->group:module:version
-        classpath 'com.xq.plugin:test:1.0.0'
-    }
-}
-
-//自定义gradle plugin的properties文件名
-apply plugin: 'com.xq.groovy'
-//################################################################
-//赋值方式一：
-testExt1 {
-    //给插件扩展的属性赋值
-    message "hello world 1111111111111111"
-
-    nestArgs {
-        msg "hello world nest--------------"
-    }
-}
-
-//赋值方式二：
-testExt2.message = "hello world 22222222222222"
-
-//################################################################
+apply from: 'buildsrc.gradle'

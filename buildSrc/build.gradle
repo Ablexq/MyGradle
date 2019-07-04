@@ -1,11 +1,4 @@
 apply plugin: 'groovy'
-//打包到本地Maven
-apply plugin: 'maven'
-
-//打包到本地Maven
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     //gradle sdk
@@ -14,19 +7,10 @@ dependencies {
     compile localGroovy()
 }
 repositories {
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
     jcenter()
+    google()
+    mavenLocal()
 }
 
-//打包到本地Maven：设置maven deploy
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            //设置插件的GAV参数
-            pom.groupId = 'com.xq.plugin'
-            pom.artifactId = 'test'
-            pom.version = '1.0.0'
-            //文件发布到下面目录
-            repository(url: uri('../repo'))
-        }
-    }
-}
+apply from: 'maven.gradle'
